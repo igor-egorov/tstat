@@ -48,9 +48,10 @@ from datetime import datetime
 
 class Render(object):
 
-    def __init__(self, storage, root_dir):
+    def __init__(self, storage, root_dir, excluded):
         self._storage = storage
         self._root_dir = root_dir
+        self._excluded = excluded
 
     def render(self):
         return ''.join([
@@ -116,6 +117,10 @@ min-width:110px !important;
                 <td><code>{}</code></td>
             </tr>
             <tr>
+                <td>Excluded Paths</td>
+                <td><small><code>{}</code></small></td>
+            </tr>
+            <tr>
                 <td>Report Generation Date</td>
                 <td>{}</td>
             </tr>
@@ -132,7 +137,7 @@ min-width:110px !important;
 
 
         <div class="ui small statistics">
-        '''.format(self._root_dir, datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        '''.format(self._root_dir, '<br>'.join(self._excluded), datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
     def _render_statistics(self):
         return '''

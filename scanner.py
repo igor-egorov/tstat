@@ -78,16 +78,18 @@ class Scanner(object):
     """Recursively walks over a directory tree scanning C++ sources for Google Test cases"""
     TARGET_EXTS = ('.cpp', '.cxx', '.cc', '.c', '.hpp', '.h')
 
-    def __init__(self, storage, dir):
+    def __init__(self, storage, dir, exclude_dirs):
         """Scan all recursively under the root_dir"""
         self._storage = storage
         self._sources = []
+        self._exclude = [os.path.join(dir, e) for e in exclude_dirs]
         self.scan_dir(dir)
         for file in self._sources:
             self.scan_file(file)
 
     def scan_dir(self, dir):
-        for root, _, files in os.walk(dir):
+        for root, dirs, files in os.walk(dir, topdown=True):
+            dirs[:] = [d for d in dirs if os.path.join(root, d) not in self._exclude]
             for file in files:
                 if file.endswith(self.TARGET_EXTS):
                     self._sources.append(join(root, file))
