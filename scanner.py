@@ -33,7 +33,7 @@ class TestCase(object):
             self.then = None
 
     def _parse_signature(self, signature):
-        pattern = r'(TYPED_)?TEST(_CASE)?(_[FP])?[ ]*\(([A-Za-z0-9_ ]+),([A-Za-z0-9_ ]+)\)'
+        pattern = r'(TYPED_)?TEST(_CASE)?(_[FP])?[ ]*\(([A-Za-z0-9_ ]+),([A-Za-z0-9_ ]+)'
         match = re.search(pattern, signature)
         assert match is not None, 'Unsupported test case signature format: {}\n{}:{}'.format(signature, self.file_name,
                                                                                              self.line)
